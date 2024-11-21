@@ -28,7 +28,7 @@ export class UserFormComponent implements OnInit {
       first_name: ["", Validators.required],
       last_name: ["", Validators.required],
       full_name: [{ value: "", disabled: true }],
-      age: ["", [Validators.required, Validators.min(0)]],
+      age: ["", [Validators.required, Validators.min(18)]],
       email: ["", [Validators.required, Validators.email]],
     });
   }
@@ -68,6 +68,8 @@ export class UserFormComponent implements OnInit {
         return "This field is required";
       } else if (control.errors["email"]) {
         return "Enter a valid email";
+      } else if (control.errors["min"]) {
+        return "Age must be greater than or equal to 18";
       }
     }
     return null;
