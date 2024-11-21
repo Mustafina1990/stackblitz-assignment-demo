@@ -35,6 +35,12 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit() {
     this.loadUserData();
+    this.userForm
+      .get("first_name")
+      ?.valueChanges.subscribe(() => this.updateFullName());
+    this.userForm
+      .get("last_name")
+      ?.valueChanges.subscribe(() => this.updateFullName());
   }
 
   loadUserData() {
@@ -42,6 +48,7 @@ export class UserFormComponent implements OnInit {
     this.userService.getUser().subscribe({
       next: (user) => {
         this.userForm.patchValue(user);
+        this.updateFullName();
         this.loading = false;
       },
       error: () => {
@@ -49,6 +56,12 @@ export class UserFormComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  updateFullName() {
+    const firstName = this.userForm.get("first_name")?.value;
+    const lastName = this.userForm.get("last_name")?.value;
+    this.userForm.get("full_name")?.setValue(`${firstName} ${lastName}`);
   }
 
   onSave() {
