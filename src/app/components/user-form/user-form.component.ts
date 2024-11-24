@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormArray,
 } from "@angular/forms";
 import { User } from "../../models/user.model";
 import { UserService } from "../../services/user-service.service";
@@ -22,6 +23,12 @@ export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   loading = false;
   error: string | null = null;
+  predefinedSkills: string[] = [
+    "UX/UI Design",
+    "PHP Development",
+    "JavaScript",
+    "Angular",
+  ];
 
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.userForm = this.fb.group({
@@ -30,6 +37,8 @@ export class UserFormComponent implements OnInit {
       full_name: [{ value: "", disabled: true }],
       age: ["", [Validators.required, Validators.min(18)]],
       email: ["", [Validators.required, Validators.email]],
+      skills: this.fb.array([]),
+      newSkill: [""],
     });
   }
 
@@ -48,6 +57,7 @@ export class UserFormComponent implements OnInit {
     this.userService.getUser().subscribe({
       next: (user) => {
         this.userForm.patchValue(user);
+        this.setSkills(user.skills);
         this.updateFullName();
         this.loading = false;
       },
@@ -62,6 +72,39 @@ export class UserFormComponent implements OnInit {
     const firstName = this.userForm.get("first_name")?.value;
     const lastName = this.userForm.get("last_name")?.value;
     this.userForm.get("full_name")?.setValue(`${firstName} ${lastName}`);
+  }
+
+  setSkills(skills: string[]) {
+    const skillsFormArray = this.userForm.get("skills") as FormArray;
+    skills.forEach((skill) => skillsFormArray.push(this.fb.control(skill)));
+  }
+
+  get skills(): FormArray {
+    return this.userForm.get("skills") as FormArray;
+  }
+
+  addSkill(skill: string = ""): void {
+    if (skill && !this.skills.value.includes(skill)) {
+      this.skills.push(this.fb.control(skill));
+      this.userForm.get("newSkill")?.setValue("");
+    }
+  }
+
+  removeSkill(index: number): void {
+    this.skills.removeAt(index);
+  }
+
+  onSkillSelect(event: Event): void {
+    const selectElement = (event.target as HTMLSelectElement).value;
+    this.addSkill(selectElement);
+  }
+
+  addNewSkill(): void {
+    const newSkill = this.userForm.get("newSkill")?.value;
+    if (newSkill && !this.predefinedSkills.includes(newSkill)) {
+      this.predefinedSkills.push(newSkill);
+      this.addSkill(newSkill);
+    }
   }
 
   onSave() {

@@ -39,6 +39,56 @@
         getErrorMessage("email")
       }}</span>
     </div>
+    <div class="form-field">
+      <label for="skills">Skills:</label>
+      <div formArrayName="skills" class="wrapper">
+        <div
+          *ngFor="let skill of skills.controls; let i = index"
+          class="skills-container"
+        >
+          <input
+            [formControlName]="i"
+            class="added-skill"
+            placeholder="Enter skill"
+          />
+          <button type="button" (click)="removeSkill(i)" class="remove-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <select (change)="onSkillSelect($event)" class="select-skill">
+        <option value="">Select skill</option>
+        <option *ngFor="let skill of predefinedSkills" [value]="skill">
+          {{ skill }}
+        </option>
+      </select>
+      <input
+        type="text"
+        formControlName="newSkill"
+        placeholder="Enter new skill"
+      />
+      <button
+        type="button"
+        (click)="addNewSkill()"
+        class="button-add-new-skill"
+      >
+        Add new skill
+      </button>
+      <span class="error" *ngIf="userForm.get('skills')?.errors">{{
+        getErrorMessage("skills")
+      }}</span>
+    </div>
     <input type="hidden" id="time" formControlName="time" />
     <div class="form-buttons">
       <button type="submit" [disabled]="!userForm.valid">Save</button>
