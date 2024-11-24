@@ -31,7 +31,7 @@ export class ApiService {
         last_name: "Doe",
         age: 30,
         email: "john.doe@example.com",
-        skills: ["UX/UI Design", "PHP Development", "JavaScript", "Angular"],
+        skills: [],
       };
       localStorage.setItem(this.storageKey, JSON.stringify(initialData));
     }

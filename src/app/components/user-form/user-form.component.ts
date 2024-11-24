@@ -37,7 +37,7 @@ export class UserFormComponent implements OnInit {
       full_name: [{ value: "", disabled: true }],
       age: ["", [Validators.required, Validators.min(18)]],
       email: ["", [Validators.required, Validators.email]],
-      skills: this.fb.array([]),
+      skills: this.fb.array([], Validators.required),
       newSkill: [""],
     });
   }

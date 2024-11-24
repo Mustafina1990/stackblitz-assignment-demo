@@ -78,6 +78,7 @@
 .wrapper {
   display: flex;
   max-width: 600px;
+  flex-wrap: wrap;
   margin: 1rem auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -121,4 +122,12 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.required {
+  color: rgb(255, 3, 3);
+}
+
+.error {
+  display: block;
 }
