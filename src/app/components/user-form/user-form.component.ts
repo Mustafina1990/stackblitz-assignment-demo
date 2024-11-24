@@ -121,7 +121,20 @@ export class UserFormComponent implements OnInit {
     const control = this.userForm.get(controlName);
     if (control && control.errors) {
       if (control.errors["required"]) {
-        return "This field is required";
+        switch (controlName) {
+          case "first_name":
+            return "First Name is required";
+          case "last_name":
+            return "Last Name is required";
+          case "age":
+            return "Age is required";
+          case "email":
+            return "Email is required";
+          case "skills":
+            return "At least one skill is required";
+          default:
+            return "This field is required";
+        }
       } else if (control.errors["email"]) {
         return "Enter a valid email";
       } else if (control.errors["min"]) {
